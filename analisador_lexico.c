@@ -69,6 +69,9 @@ int ehInteiro(char * string)
     return string[i] == '\0';
 }
 
+/*
+    Retorna o token o qual é uma substring do nosso input.
+*/
 char * pegarSubstring(char * string, int ini, int fim)
 {
     int tamanhoSubst = fim - ini + 1;
@@ -78,11 +81,19 @@ char * pegarSubstring(char * string, int ini, int fim)
     // Copia os caracteres da string para a substring.
     strncpy(substr, string + ini, tamanhoSubst);
 
+    // Finaliza a string.
     substr[tamanhoSubst] = '\0';
 
     return substr;
 }
 
+
+/*
+    Analisa Lexicalmente uma string dada.
+
+    Para isso, utilizamos a técnica de Variable Sliding Window,
+     por isso, iniciamos dois ponteiros left e o right.
+*/
 int analisadorLexico(char * input)
 {
     int left = 0;
@@ -130,10 +141,12 @@ int analisadorLexico(char * input)
 
             else if (!ehIdentificadorValido(substr) && !ehDelimitador(input[right - 1]))
             {
-                printf("Error");
+                printf("Token: Nao identificado, Valor: Indefinido");
             }
 
+            // Evitar um memory leak.
             free(substr);
+
             left = right;
         }
     }
@@ -171,7 +184,14 @@ void ler_arquivo(char * arquivo_path)
 
 int main()
 {
-    ler_arquivo("teste.c");
+    char nome_arquivo[30];
+
+    printf("Digite o nome do arquivo: ");
+
+    scanf("%s", nome_arquivo);
+
+    ler_arquivo(nome_arquivo);
+
 
     return 0;
 }
